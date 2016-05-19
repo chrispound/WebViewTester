@@ -1,4 +1,7 @@
 <resources>
   <string name="app_name">webviewTest</string>
   <string name="action_settings">Settings</string>
+  <string name="load_webpage">Load WebPage</string>
+  <string name="cancel">Cancel</string>
+  <string name="ok">Ok</string>
 </resources>

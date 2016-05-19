@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnKeyListener {
 
-  public static final String MOBILE_USER_AGENT = " MozuMobleApp/";
+  public static final String URL = "url";
   WebView mWebView;
 
   @Override
@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
       mWebView.setVisibility(View.VISIBLE);
       mWebView.getSettings().setJavaScriptEnabled(true);
       mWebView.getSettings().setDomStorageEnabled(true);
-      mWebView.loadUrl("https://www.google.com");
+      String url = getPreferences(Context.MODE_PRIVATE).getString(URL, "https://www.google.com");
+      mWebView.loadUrl(url);
       mWebView.setWebViewClient(new WebViewClient() {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -72,23 +73,23 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     final EditText input = new EditText(this);
     SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-    String url = preferences.getString("url", "");
+    String url = preferences.getString(URL, "");
     input.setText(url);
     builder.setView(input);
-    builder.setTitle("Load Webpage");
-    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    builder.setTitle(getString(R.string.load_webpage));
+    builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         dialog.dismiss();
       }
     });
-    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
       @Override
       public void onClick(DialogInterface dialog, int which) {
         String url = input.getText().toString();
         mWebView.loadUrl(url);
         SharedPreferences preferences = getPreferences(Context.MODE_PRIVATE);
-        preferences.edit().putString("url", url).apply();
+        preferences.edit().putString(URL, url).apply();
         dialog.dismiss();
       }
     });
@@ -104,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements View.OnKeyListene
     if (item.getItemId() == R.id.load) {
       showLoadUrlDialog();
       return true;
-    } else {
+    }
+    else {
       return super.onOptionsItemSelected(item);
     }
   }
